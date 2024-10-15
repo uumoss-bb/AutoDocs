@@ -6,8 +6,6 @@ const dateOptions: any = {
   day: "2-digit",
 };
 
-const normalizeNarrative = (text: string = 'missing text') => text.trim().replace('\n', '')
-
 const replaceSpacesWithUnderscores = (text: string = 'missing text') => text.replace(/\s+/g, '_');
 
 const convertDate = {
@@ -19,7 +17,6 @@ const prettyJSON = (data: object) => JSON.stringify(data, null, 2)
 
 export {
   replaceSpacesWithUnderscores,
-  normalizeNarrative,
   convertDate,
   prettyJSON
 }

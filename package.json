@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "docs": "jest alpha"
+    "unite": "jest alpha"
   },
   "repository": {
     "type": "git",
