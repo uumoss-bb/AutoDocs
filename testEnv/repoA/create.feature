@@ -232,13 +232,13 @@ Feature: Create entry
     And the result should not have property "attributes.card_citi"
     And the result should not have property "attributes.card_capitalone"
 
-#  @create-entry-no-linkedAccount-gate-attributes @linkedAccount
-#  Scenario: Create entry when campaign has no linkedAccount gate
-#    Given I am logged in as a tm user with validLinkedTmAccount email
-#    And I create an open campaign
-#    When I submit an entry
-#    Then the result should not have property "attributes.linked_verizon"
-#    And the result should not have property "attributes.linked_citi"
+ @create-entry-no-linkedAccount-gate-attributes @linkedAccount
+ Scenario: Create entry when campaign has no linkedAccount gate
+   Given I am logged in as a tm user with validLinkedTmAccount email
+   And I create an open campaign
+   When I submit an entry
+   Then the result should not have property "attributes.linked_verizon"
+   And the result should not have property "attributes.linked_citi"
 
   @create-entry-use-user-fields
   Scenario Outline: Validate that the created entry phone/email matches the user account phone/email
