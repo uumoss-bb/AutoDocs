@@ -1,14 +1,13 @@
 import shell from 'shelljs'
 import { selectTruthyItems } from '../shared/selectors'
 
-type FullLineNarrative = { path: string, fileName: string, lineNumber: number, narrative: string }
-type ExtractedNarrativeDetails = { [fileName: string]: FullLineNarrative[] }
+type LineNarrative = { path: string, fileName: string, lineNumber: number, narrative: string }
+type narrativeDetails = { [fileName: string]: LineNarrative[] }
 
 const normalizeNarrative = (narrative: string, lineDetails: string) =>
   narrative.replace(lineDetails, '')
   .replace(/[^a-zA-Z\s]/g, '')
   .trim()
-
 
 export const getLineDetail = (line: string) => {
   //This needs to be tested to see what happens with deeply nested features
@@ -42,28 +41,30 @@ export const getSpecificDetails = (details: string) => {
   }
 }
 
-const searchFeatureNarratives = () => {
+const getNarrativeDetails = (searchResultInArray: string[]) => searchResultInArray.reduce((prevValue, line) => {
+  const lineDetails = getLineDetail(line)
+  if(lineDetails) {
+    const { fileName, ...otherDetails } = getSpecificDetails(lineDetails)
+    const narrative = normalizeNarrative(line, lineDetails)
+    const lineNarrative: LineNarrative = { fileName, narrative, ...otherDetails }
+    const prevFileNarrative = prevValue[fileName]
+    const fileNarrative = prevFileNarrative ? [ ...prevFileNarrative, lineNarrative ] : [ lineNarrative ]
+    return {
+      ...prevValue,
+      [fileName]: fileNarrative
+    }
+  }
+  return prevValue
+}, {} as narrativeDetails)
+
+const searchFeatureNarratives = (rootFolder: string = './testEnv/') => {
   shell.config.silent = true
   shell.config.fatal = true
 
   const narrativeSearchResult = shell.exec('grep -r -n --include="*.feature" -E "Scenario|Given|And|When|Then" .').stdout
-  const narrativeLinesInArray = narrativeSearchResult.split('./testEnv/').filter(selectTruthyItems)
-  const extractedNarrativeDetails = narrativeLinesInArray.reduce((prevValue, line) => {
-    const lineDetails = getLineDetail(line)
-    if(lineDetails) {
-      const { fileName, ...otherDetails } = getSpecificDetails(lineDetails)
-      const narrative = normalizeNarrative(line, lineDetails)
-      const fullLineNarrative = { fileName, narrative, ...otherDetails }
-      const prevFileNarrative = prevValue[fileName]
-      const fileNarrative = prevFileNarrative ? [ ...prevFileNarrative, fullLineNarrative ] : [ fullLineNarrative ]
-      return {
-        ...prevValue,
-        [fileName]: fileNarrative
-      }
-    }
-    return prevValue
-  }, {} as ExtractedNarrativeDetails)
-  console.log(extractedNarrativeDetails)
+  const searchResultInArray = narrativeSearchResult.split(rootFolder).filter(selectTruthyItems)
+  const narrativeDetails = getNarrativeDetails(searchResultInArray)
+  return narrativeDetails
 }
 
 export default searchFeatureNarratives
