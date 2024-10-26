@@ -47,7 +47,7 @@ const getNarrativeDetails = (searchResultInArray: string[]) => searchResultInArr
   }
 }, {} as narrativeDetails)
 
-const searchFeatureNarratives = (rootFolder: string = './testEnv/') => {
+const searchFeatureNarratives = (rootFolder: string) => {
   shell.config.silent = true
   shell.config.fatal = true
 

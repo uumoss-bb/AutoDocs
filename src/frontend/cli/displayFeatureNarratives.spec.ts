@@ -1,9 +1,8 @@
-import searchFeatureNarratives from '../../business_logic/searchFeatureNarratives'
 import shell from 'shelljs'
-import FileSystem from '../../backend/FileSystem'
+import extractFeatureNarratives from '../../workers/extractFeatureNarratives'
 
 it("ALPHA PROTOCOL", () => {
-  const narrativeDetails = searchFeatureNarratives()
+  const narrativeDetails = extractFeatureNarratives('./testEnv/')
 
   const narrativeDetailsArray = Object.keys(narrativeDetails)
   narrativeDetailsArray.forEach(fileName => {
@@ -17,9 +16,4 @@ it("ALPHA PROTOCOL", () => {
       }
     })
   })
-
-  const writeNarrativeFileResult = FileSystem.writePersonalFile('feature_narratives', narrativeDetails)
-  if(writeNarrativeFileResult.error) {
-    console.log("FAILED TO WRITE NARRATIVE FILE")
-  }
 })

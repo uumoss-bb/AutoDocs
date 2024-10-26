@@ -3,10 +3,14 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "type": "module",
+  "type": "commonjs",
   "scripts": {
-    "narratives": "jest displayFeatureNarratives.spec",
-    "data": "jest displayDataSchemas.spec"
+    "clean": "rm -rf dist",
+    "build": "npm run clean && babel src --out-dir dist --extensions '.ts,.tsx'",
+    "type-check": "tsc --noEmit",
+    "test:narratives": "jest displayFeatureNarratives.spec",
+    "test:data": "jest displayDataSchemas.spec",
+    "narratives": "node ./dist/frontend/cli/narratives.js"
   },
   "repository": {
     "type": "git",
@@ -35,10 +39,12 @@
     "uuid": "^10.0.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.25.2",
+    "@babel/cli": "^7.25.9",
+    "@babel/core": "^7.26.0",
     "@babel/plugin-transform-runtime": "^7.24.7",
-    "@babel/preset-env": "^7.25.2",
+    "@babel/preset-env": "^7.26.0",
     "@babel/preset-react": "^7.24.7",
+    "@babel/preset-typescript": "^7.26.0",
     "@babel/runtime": "^7.25.0",
     "@types/jest": "^29.5.12"
   }
