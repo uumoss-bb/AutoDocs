@@ -1,4 +1,4 @@
-import searchFeatureNarratives from '../../businessLogic/searchFeatureNarratives'
+import searchFeatureNarratives from '../../business_logic/searchFeatureNarratives'
 import shell from 'shelljs'
 
 it("ALPHA PROTOCOL", () => {

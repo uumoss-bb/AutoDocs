@@ -1,4 +1,4 @@
-import searchDataSchemas from "../../businessLogic/searchDataSchemas";
+import searchDataSchemas from "../../business_logic/searchDataSchemas";
 import shell from 'shelljs'
 import { prettyJSON } from "../../shared/normalizers";
 
