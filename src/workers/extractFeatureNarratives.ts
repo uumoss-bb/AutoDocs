@@ -1,8 +1,8 @@
 import searchFeatureNarratives from "../business_logic/searchFeatureNarratives"
 import FileSystem from "../backend/FileSystem"
 
-const extractFeatureNarratives = (rootFolder: string = './') => {
-  const featureNarratives = searchFeatureNarratives(rootFolder)
+const extractFeatureNarratives = () => {
+  const featureNarratives = searchFeatureNarratives()
   const narrativeKeys = Object.keys(featureNarratives)
 
   const { error: writeNarrativesError } = FileSystem.writePersonalFile('feature_narratives', featureNarratives)

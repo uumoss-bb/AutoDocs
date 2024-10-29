@@ -1,33 +1,37 @@
 import shell from 'shelljs'
 import { selectTruthyItems } from '../shared/selectors'
+import { parseGrepResult } from '../shared/normalizers'
 
-type DataSchemaFiles = { [fileName: string]: string }
+type DataSchema = { repoName: string, path: string, fileName: string, lineNumber: number, schema: string }
+type DataSchemaFiles = { [fileName: string]: DataSchema }
 
-const sourceOfTruth = './testEnv/titan/monoql/app/graphql/schema/types'
+const findCommand = 'find . -type f -name "*.graphql"'
 
 const getDataSchemasByFileName = (filePaths: string[]) =>
-  filePaths.reduce((prevValue, fileName) => {
-    if(fileName.includes('.graphql')) {
-      const typeDefs = shell.cat(filePaths).stdout
+  filePaths.reduce((prevValue, filePath) => {
+    if(filePath.includes('.graphql')) {
+      const schema = shell.cat(filePaths).stdout
+      const { fileName, repoName, path, lineNumber } = parseGrepResult(filePath)
       return {
         ...prevValue,
-        [fileName]: typeDefs
+        [filePath]: {
+          fileName,
+          repoName,
+          path,
+          lineNumber,
+          schema
+        }
       }
     }
     return prevValue
   }, {} as DataSchemaFiles)
 
-const getSchemaFilePaths = () => {
-  const filesInSourceOfTruth  = shell.exec(`find . -type f -name "*.graphql" `).stdout
-  const filePaths = filesInSourceOfTruth.split('./').filter(selectTruthyItems)
-  return filePaths
-}
-
 const searchDataSchemas = () => {
   shell.config.silent = true
   shell.config.fatal = true
 
-  const filePaths = getSchemaFilePaths()
+  const findCommandResult  = shell.exec(findCommand).stdout
+  const filePaths = findCommandResult.split('./').filter(selectTruthyItems)
   const dataSchemas = getDataSchemasByFileName(filePaths)
   return dataSchemas
 }
