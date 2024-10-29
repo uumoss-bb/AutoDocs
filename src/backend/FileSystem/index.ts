@@ -1,5 +1,5 @@
 import * as fs from 'fs';
-import { PERSONAL_STORAGE } from '../../shared/enums/fileNames';
+import { BASE_STORAGE } from '../../shared/enums/fileNames';
 
 type FileSystemReturn = { error: boolean | string, data: object }
 
@@ -81,4 +81,4 @@ class _FileSystem {
 
 export { _FileSystem }
 
-export default new _FileSystem(PERSONAL_STORAGE)
+export default new _FileSystem(BASE_STORAGE)

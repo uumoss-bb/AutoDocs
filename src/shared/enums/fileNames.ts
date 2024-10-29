@@ -1,2 +1,2 @@
 
-export const PERSONAL_STORAGE = '.personal_storage'
+export const BASE_STORAGE = 'auto_docs'

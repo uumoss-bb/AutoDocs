@@ -1,17 +1,21 @@
 import searchFeatureNarratives from "../business_logic/searchFeatureNarratives"
 import FileSystem from "../backend/FileSystem"
-import shell from 'shelljs'
-import { prettyJSON } from "../shared/normalizers"
 
 const extractFeatureNarratives = (rootFolder: string = './') => {
-  const narrativeDetails = searchFeatureNarratives(rootFolder)
+  const featureNarratives = searchFeatureNarratives(rootFolder)
+  const narrativeKeys = Object.keys(featureNarratives)
 
-  const { error } = FileSystem.writePersonalFile('feature_narratives', narrativeDetails)
-  if(error) {
-    throw new Error("FAILED TO WRITE NARRATIVE FILE: " + error)
+  const { error: writeNarrativesError } = FileSystem.writePersonalFile('feature_narratives', featureNarratives)
+  if(writeNarrativesError) {
+    throw new Error("FAILED TO WRITE NARRATIVE FILE: " + writeNarrativesError)
   }
 
-  return narrativeDetails
+  const { error: writeKeysError } = FileSystem.writePersonalFile('feature_narratives_keys', narrativeKeys)
+  if(writeKeysError) {
+    throw new Error("FAILED TO WRITE NARRATIVE KEY FILE: " + writeKeysError)
+  }
+
+  return featureNarratives
 }
 
 export default extractFeatureNarratives

@@ -1,8 +1,11 @@
+#!/usr/bin/env node
+
 import extractFeatureNarratives from "../../workers/extractFeatureNarratives";
 
-const narratives = () => {
-  const featureNarratives = extractFeatureNarratives('./')
-  console.log(featureNarratives)
+const narratives = async () => {
+  console.log("...extracting narrative")
+  const featureNarratives = await extractFeatureNarratives('./')
+  console.log("complete")
 }
 
-narratives();
+(async () => await narratives())();

@@ -129,4 +129,4 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
-.personal_storage
+auto_docs

@@ -5,10 +5,10 @@ type DataSchemaFiles = { [fileName: string]: string }
 
 const sourceOfTruth = './testEnv/titan/monoql/app/graphql/schema/types'
 
-const getDataSchemasByFileName = (fileNames: string[]) =>
-  fileNames.reduce((prevValue, fileName) => {
+const getDataSchemasByFileName = (filePaths: string[]) =>
+  filePaths.reduce((prevValue, fileName) => {
     if(fileName.includes('.graphql')) {
-      const typeDefs = shell.cat(`${sourceOfTruth}/${fileName}`).stdout
+      const typeDefs = shell.cat(filePaths).stdout
       return {
         ...prevValue,
         [fileName]: typeDefs
@@ -17,18 +17,18 @@ const getDataSchemasByFileName = (fileNames: string[]) =>
     return prevValue
   }, {} as DataSchemaFiles)
 
-const getFileNamesFromSources = () => {
-  const filesInSourceOfTruth  = shell.exec(`cd ${sourceOfTruth} && ls`).stdout
-  const fileNames = filesInSourceOfTruth.split('\n').filter(selectTruthyItems)
-  return fileNames
+const getSchemaFilePaths = () => {
+  const filesInSourceOfTruth  = shell.exec(`find . -type f -name "*.graphql" `).stdout
+  const filePaths = filesInSourceOfTruth.split('./').filter(selectTruthyItems)
+  return filePaths
 }
 
 const searchDataSchemas = () => {
   shell.config.silent = true
   shell.config.fatal = true
 
-  const fileNames = getFileNamesFromSources()
-  const dataSchemas = getDataSchemasByFileName(fileNames)
+  const filePaths = getSchemaFilePaths()
+  const dataSchemas = getDataSchemasByFileName(filePaths)
   return dataSchemas
 }
 
