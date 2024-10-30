@@ -2,7 +2,7 @@ import shell from 'shelljs'
 import { selectTruthyItems } from '../shared/selectors'
 import { parseGrepResult, prettyJSON } from '../shared/normalizers'
 
-type LineNarrative = { repoName: string, path: string, fileName: string, lineNumber: number, fileLine: string }
+type LineNarrative = { repoName: string, path: string, fileName: string, lineNumber: number|string, fileLine: string }
 type narrativeDetails = { [fileName: string]: LineNarrative[] }
 
 const grepCommand = 'grep -r -n --include="*.feature" -E "Scenario|Given|And|When|Then" .'

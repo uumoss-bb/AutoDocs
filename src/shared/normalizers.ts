@@ -17,11 +17,12 @@ const prettyJSON = (data: object) => JSON.stringify(data, null, 2)
 
 const parseGrepResult = (line: string) => {
   const normalizeParsedData = (data: RegExpMatchArray|null) => data ? data[1] : 'missing'
+  const normalizeParsedNumber = (data: RegExpMatchArray|null) => data ? Number(data[1]) : 'missing'
   const normalizeFileLine = (narrative: string) => narrative.trim()
 
   const repoRegex = /^([^/]+)/;
-  const pathRegex = /\/((?:[^/]+\/)*)[^/]+(?:\.features|\.graphql)?/;
-  const fileNameRegex = /([^/]+(?:\.features|\.graphql)?)/;
+  const pathRegex = /\/((?:[^/]+\/)*)[^/]+/;
+  const fileNameRegex = /([^/]+\.(feature|graphql))/;
   const lineNumberRegex = /:(\d+):/;
   const fileLineRegex = /(?<=:\d+:\s)(.+)/;
 
@@ -35,7 +36,7 @@ const parseGrepResult = (line: string) => {
     repoName: normalizeParsedData(repoMatch),
     path: normalizeParsedData(pathMatch),
     fileName: normalizeParsedData(fileNameMatch),
-    lineNumber: Number( normalizeParsedData(lineNumberMatch) ),
+    lineNumber: normalizeParsedNumber(lineNumberMatch),
     fileLine: normalizeFileLine( normalizeParsedData(fileLineMatch) )
   };
 };

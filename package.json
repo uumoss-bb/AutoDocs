@@ -5,7 +5,8 @@
   "main": "index.js",
   "type": "commonjs",
   "bin": {
-    "narratives": "./dist/frontend/cli/narratives.js"
+    "narratives": "./dist/frontend/cli/narratives.js",
+    "schema": "./dist/frontend/cli/schema.js"
   },
   "scripts": {
     "clean": "rm -rf dist",
@@ -13,8 +14,7 @@
     "link": "npm unlink auto_docs && npm link auto_docs",
     "type-check": "tsc --noEmit",
     "test:narratives": "jest displayFeatureNarratives.spec",
-    "test:data": "jest displayDataSchemas.spec",
-    "narratives": "node ./dist/frontend/cli/narratives.js"
+    "test:data": "jest displayDataSchemas.spec"
   },
   "repository": {
     "type": "git",
