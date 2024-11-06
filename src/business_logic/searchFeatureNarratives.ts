@@ -5,7 +5,7 @@ import { parseGrepResult, prettyJSON } from '../shared/normalizers'
 type LineNarrative = { repoName: string, path: string, fileName: string, lineNumber: number|string, fileLine: string }
 type narrativeDetails = { [fileName: string]: LineNarrative[] }
 
-const grepCommand = 'grep -r -n --include="*.feature" -E "Scenario|Given|And|When|Then" .'
+const grepCommand = 'grep -r -n --include="*.feature" --exclude-dir=node_modules -E "Scenario|Given|And|When|Then" .'
 
 const getNarrativeDetails = (searchResultInArray: string[]) => searchResultInArray.reduce((prevValue, line) => {
   const { fileName, ...otherDetails } = parseGrepResult(line)
